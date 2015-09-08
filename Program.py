@@ -1,14 +1,17 @@
 import subprocess
+import time
 
 class Program(object):
 
 	def __init__(self, name, config):
 		self.name = name
 		self.config = config
+		self.process = [];
+		self.currentRetries = 0;
 		# print(name)
 
 		if ( "autostart" in self.config and self.config["autostart"] == True ) :
-			self.process = self.run()
+			self.run()
 
 	def getStdOut(self) :
 		if ( "stdout" in self.config and self.config["stdout"] != "" ) :
@@ -38,9 +41,26 @@ class Program(object):
 		else :
 			return ( None )
 
+	def getWorkingDir(self):
+		if ( "workingdir" in self.config and self.config["workingdir"] != "" ) :
+			return ( self.config["workingdir"] )
+		else :
+			return ( None )
+
 	def run(self):
-		process = subprocess.Popen(	self.getConfigValue("cmd"),
-									shell=True,
-									universal_newlines=True,
-									stdout = self.getStdOut(),
-									stderr = self.getStdErr())
+		nbProcess = self.getConfigValue("numprocs")
+		i = 0;
+
+		if ( nbProcess == None ):
+			nbProcess = 1
+		while ( i < nbProcess ):
+			self.process.append( {	"process" : subprocess.Popen( self.getConfigValue("cmd"),
+												shell=True,
+												universal_newlines=True,
+												stdout = self.getStdOut(),
+												stderr = self.getStdErr(),
+												cwd=self.getWorkingDir() ),
+									"date" : time.time()
+								}
+							)
+			i += 1
