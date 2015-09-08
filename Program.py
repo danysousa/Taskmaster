@@ -3,6 +3,9 @@ import getopt
 import os
 import subprocess
 
+def pre_exec(config) :
+	os.umask( int( config["umask"], 8 ))
+
 class Program(object):
 
 	def __init__(self, name, config):
@@ -45,14 +48,11 @@ class Program(object):
 		for (key, value) in self.config["env"].items() :
 			os.environ[str(key)] = str(value)
 
-	def pre_exec(self) :
-		print(self.config["umask"])
-		# os.umask()
-
 	def run(self):
 		process = subprocess.Popen(	self.getConfigValue("cmd"),
 									shell=True,
 									universal_newlines=True,
 									stdout = self.getStdOut(),
 									stderr = self.getStdErr(),
-									preexec_fn = pre_exec)
+									preexec_fn = pre_exec(self.config)
+									)

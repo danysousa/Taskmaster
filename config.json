@@ -1,9 +1,9 @@
 {
 	"cat":
 	{
-		"cmd": "cat -e /Users/danysousa/code/taskmaster/main.py",
+		"cmd": "touch POK",
 		"numprocs": 1,
-		"umask": "022",
+		"umask": "777",
 		"workingdir": "/tmp",
 		"autostart": true,
 		"autorestart": "unexpected",
