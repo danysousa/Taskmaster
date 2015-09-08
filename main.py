@@ -25,7 +25,6 @@ def main( argv ):
 	program = {};
 	for (key, value) in config.items():
 		program[key] = Program(key, value)
-		program[key].getEnv()
 
 	# os.umask( 0o700 )
 	# fh1 = os.open( "qq1.junk", os.O_CREAT, 0o777 )
