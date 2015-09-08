@@ -4,36 +4,38 @@ import sys
 import getopt
 import os
 import threading
+import signal
+
 
 class Taskmaster(object):
 
 	def __init__(self, prog):
+		signal.signal(signal.SIGINT, self.quitBySignal)
 		self.prog = prog
 		self.updated = 0
-		self.t = threading.Thread( name="start", target=self.start )
+		self.isDone = False;
+		self.t = threading.Thread(name='shell', target=self.shell)
 		self.t.start()
 		self.updateAll()
 
-	def restart():
-		print("coucou")
+	def quitBySignal(self, a, b):
+		self.isDone = True
+		print("Press return for quit")
 
-	def start(self):
-		while (1):
-			sys.stdout.write("$> ")
-			sys.stdout.flush()
-			try:
-				line = sys.stdin.readline()
-				print(self.updated)
-			except KeyboardInterrupt:
-				break
-			if not line:
-				break
-			time.sleep(0.05)
+	def shell(self):
+		while ( self.isDone == False ):
+			line = input("$>")
+			print(self.updated)
+			if ( line == "exit" ) :
+				self.isDone = True
+			if ( line == "status" )
+				getStatus()
 
 	def updateAll(self):
-		while(1) :
-			try:
-				self.updated += 1
-				time.sleep(0.05)
-			except KeyboardInterrupt:
-				break
+		while ( self.isDone == False ):
+			self.updated += 1
+			time.sleep(0.05)
+
+	def getStatus(self) :
+		for value in self.prog :
+			print(value)

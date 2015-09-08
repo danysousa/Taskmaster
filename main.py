@@ -2,6 +2,8 @@ import sys
 import getopt
 import os
 import json
+import signal
+
 from pprint import pprint
 from Program import Program
 from Taskmaster import Taskmaster
@@ -11,6 +13,7 @@ from Taskmaster import Taskmaster
 # 		print( value + " = " + os.environ[value] )
 # 	print("---------------------")
 # 	os.system( 'env | grep POK' )
+
 
 def parsing( file ):
 	with open(file) as data_file:
@@ -22,6 +25,7 @@ def main( argv ):
 	if ( len( argv ) != 2 ):
 		return
 
+	# signal.pause()
 	config = parsing(argv[1])
 	program = {};
 	for (key, value) in config.items():
