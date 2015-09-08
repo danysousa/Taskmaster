@@ -1,3 +1,7 @@
+import sys
+import getopt
+import os
+
 class Program(object):
 
 	def __init__(self, name, config):
@@ -10,3 +14,6 @@ class Program(object):
 		# else :
 		# 	print(self.config["autostart"])
 
+	def getEnv(self) :
+		for (key, value) in self.config["env"].items() :
+			os.environ[str(key)] = str(value)
