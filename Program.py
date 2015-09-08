@@ -2,6 +2,7 @@ import sys
 import getopt
 import os
 import subprocess
+import time
 
 def pre_exec(config) :
 	os.umask( int( config["umask"], 8 ))
@@ -11,10 +12,12 @@ class Program(object):
 	def __init__(self, name, config):
 		self.name = name
 		self.config = config
+		self.process = [];
+		self.currentRetries = 0;
 		# print(name)
 
 		if ( "autostart" in self.config and self.config["autostart"] == True ) :
-			self.process = self.run()
+			self.run()
 
 	def getStdOut(self) :
 		if ( "stdout" in self.config and self.config["stdout"] != "" ) :
@@ -48,11 +51,28 @@ class Program(object):
 		for (key, value) in self.config["env"].items() :
 			os.environ[str(key)] = str(value)
 
+	def getWorkingDir(self):
+		if ( "workingdir" in self.config and self.config["workingdir"] != "" ) :
+			return ( self.config["workingdir"] )
+		else :
+			return ( None )
+
 	def run(self):
-		process = subprocess.Popen(	self.getConfigValue("cmd"),
-									shell=True,
-									universal_newlines=True,
-									stdout = self.getStdOut(),
-									stderr = self.getStdErr(),
-									preexec_fn = pre_exec(self.config)
-									)
+		nbProcess = self.getConfigValue("numprocs")
+		i = 0;
+
+		if ( nbProcess == None ):
+			nbProcess = 1
+		while ( i < nbProcess ):
+			self.process.append( {	"process" : subprocess.Popen( self.getConfigValue("cmd"),
+												shell=True,
+												universal_newlines=True,
+												stdout = self.getStdOut(),
+												stderr = self.getStdErr(),
+												cwd=self.getWorkingDir(),
+												preexec_fn = pre_exec(self.config)
+												),
+									"date" : time.time()
+								}
+							)
+			i += 1
