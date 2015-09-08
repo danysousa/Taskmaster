@@ -4,12 +4,13 @@ import os
 import json
 from pprint import pprint
 from Program import Program
+from Taskmaster import Taskmaster
 
-def showVariableEnv():
-	for value in os.environ:
-		print( value + " = " + os.environ[value] )
-	print("---------------------")
-	os.system( 'env | grep POK' )
+# def showVariableEnv():
+# 	for value in os.environ:
+# 		print( value + " = " + os.environ[value] )
+# 	print("---------------------")
+# 	os.system( 'env | grep POK' )
 
 def parsing( file ):
 	with open(file) as data_file:
@@ -26,9 +27,6 @@ def main( argv ):
 	for (key, value) in config.items():
 		program[key] = Program(key, value)
 
-	# os.umask( 0o700 )
-	# fh1 = os.open( "qq1.junk", os.O_CREAT, 0o777 )
-	# os.close ( fh1 )
-
+	taskMaster = Taskmaster(program)
 
 main( sys.argv )

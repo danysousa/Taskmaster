@@ -50,6 +50,7 @@ class Program(object):
 	def getEnv(self) :
 		for (key, value) in self.config["env"].items() :
 			os.environ[str(key)] = str(value)
+		return (os.environ)
 
 	def getWorkingDir(self):
 		if ( "workingdir" in self.config and self.config["workingdir"] != "" ) :
@@ -70,7 +71,8 @@ class Program(object):
 												stdout = self.getStdOut(),
 												stderr = self.getStdErr(),
 												cwd=self.getWorkingDir(),
-												preexec_fn = pre_exec(self.config)
+												preexec_fn = pre_exec(self.config),
+												env = self.getEnv()
 												),
 									"date" : time.time()
 								}

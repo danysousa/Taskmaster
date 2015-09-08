@@ -1,7 +1,7 @@
 {
 	"cat":
 	{
-		"cmd": "touch POK",
+		"cmd": "env",
 		"numprocs": 1,
 		"umask": "777",
 		"workingdir": "/tmp",
@@ -12,8 +12,8 @@
 		"starttime": 5,
 		"stopsignal": "TERM",
 		"stoptime": 10,
-		"stdout": "/tmp/cat.stdout",
-		"stderr": "/tmp/cat.stderr",
+		"stdout": "/tmp/env.stdout",
+		"stderr": "/tmp/env.stderr",
 		"env": {
 			"STARTED_BY" : "taskmaster", "ANSWER": 42
 		}
