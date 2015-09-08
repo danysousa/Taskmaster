@@ -1,7 +1,7 @@
 {
-	"nginx":
+	"cat":
 	{
-		"cmd": "/usr/local/bin/nginx -c /etc/nginx/test.conf",
+		"cmd": "cat -e /Users/danysousa/code/taskmaster/main.py",
 		"numprocs": 1,
 		"umask": "022",
 		"workingdir": "/tmp",
@@ -12,8 +12,8 @@
 		"starttime": 5,
 		"stopsignal": "TERM",
 		"stoptime": 10,
-		"stdout": "/tmp/nginx.stdout",
-		"stderr": "/tmp/nginx.stderr",
+		"stdout": "/tmp/cat.stdout",
+		"stderr": "/tmp/cat.stderr",
 		"env": {
 			"STARTED_BY" : "taskmaster", "ANSWER": 42
 		}
