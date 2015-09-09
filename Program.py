@@ -80,6 +80,7 @@ class Program(object):
 							)
 			i += 1
 
+	# Return the signum with
 	def getStopSignal(self):
 		signame = self.getConfigValue("stopsignal")
 
@@ -94,12 +95,13 @@ class Program(object):
 			i += 1
 		return (9)
 
+	# Stop all process
 	def stop(self, debug = False):
 		if (debug == True):
 			print( "[Start to kill " + self.name + "]" )
 		self.getStopSignal()
 		for (nb, elem) in enumerate(self.process) :
-			elem["process"].send_signal( self.getStopSignal() )
+			elem["process"].send_signal(self.getStopSignal())
 			if (debug == True):
 				print( "\t" + str(nb + 1) + "/" + str(len(self.process)) + " process killed")
 
