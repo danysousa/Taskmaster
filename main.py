@@ -3,7 +3,6 @@
 import sys
 import getopt
 import os
-import json
 import signal
 
 from pprint import pprint
@@ -17,22 +16,12 @@ from Taskmaster import Taskmaster
 # 	os.system( 'env | grep POK' )
 
 
-def parsing( file ):
-	with open(file) as data_file:
-		data = json.load(data_file)
-
-	return data
-
 def main( argv ):
 	if ( len( argv ) != 2 ):
 		return
 
 	# signal.pause()
-	config = parsing(argv[1])
-	program = {};
-	for (key, value) in config.items():
-		program[key] = Program(key, value)
 
-	taskMaster = Taskmaster(program)
+	taskMaster = Taskmaster( argv[1] )
 
 main( sys.argv )
