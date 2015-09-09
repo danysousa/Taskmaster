@@ -74,7 +74,23 @@ class Program(object):
 												preexec_fn = pre_exec(self.config),
 												env = self.getEnv()
 												),
-									"date" : time.time()
+									"date" : time.time(),
+									"name" : self.name + " " + str(i + 1)
 								}
 							)
 			i += 1
+
+	def is_process_running(self, process_id):
+		try:
+			os.kill(process_id, 0)
+			return True
+		except OSError:
+			return False
+
+	def status(self) :
+		for currentProcess in self.process :
+			print(currentProcess["process"].pid)
+			if ( self.is_process_running( currentProcess["process"].pid ) == True ) :
+				print(currentProcess["name"] + " is alive ")
+			else :
+				print(currentProcess["name"] + " is dead ")

@@ -28,8 +28,8 @@ class Taskmaster(object):
 			print(self.updated)
 			if ( line == "exit" ) :
 				self.isDone = True
-			if ( line == "status" )
-				getStatus()
+			if ( line == "status" ) :
+				self.getStatus()
 
 	def updateAll(self):
 		while ( self.isDone == False ):
@@ -37,5 +37,5 @@ class Taskmaster(object):
 			time.sleep(0.05)
 
 	def getStatus(self) :
-		for value in self.prog :
-			print(value)
+		for (key, value) in self.prog.items() :
+			value.status()
