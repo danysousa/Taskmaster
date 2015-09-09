@@ -121,6 +121,7 @@ class Program(object):
 	# Stop all process
 	def stop(self, debug = False):
 		self.stopped = True
+		self.stopAt = -1
 		if ( len(self.process) == 0 ):
 			print("This program is already stopped")
 			return
@@ -143,6 +144,8 @@ class Program(object):
 		if ( len(self.process) == 0 ):
 			print("\tProgram stopped")
 			return
+		if ( self.stopAt != -1 ) :
+			print("This program restart in " + str(self.stopAt - time.time()) + " sec")
 		for currentProcess in self.process :
 			if ( currentProcess["process"].poll() == None ) :
 				currentTime = time.time()
