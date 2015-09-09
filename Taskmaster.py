@@ -16,6 +16,7 @@ class Taskmaster(object):
 		self.updated = 0
 		self.isDone = False;
 		self.t = threading.Thread(name='shell', target=self.shell)
+
 		self.t.start()
 		self.updateAll()
 
@@ -28,16 +29,18 @@ class Taskmaster(object):
 	def shell(self):
 		while ( self.isDone == False ):
 			line = input("$>")
-
 			self.checkLine(line)
 			if ( line == "exit" ) :
 				self.isDone = True
 			if ( line == "status" ) :
 				self.getStatus()
 
+
 	# Main Loop for update && check Programs
 	def updateAll(self):
 		while ( self.isDone == False ):
+			for (name, process) in self.prog.items():
+				process.update()
 			time.sleep(0.05)
 
 	# Function for status command
@@ -49,7 +52,8 @@ class Taskmaster(object):
 	def checkLine(self, line):
 		arg = line.split(" ")
 		command = 	{
-						"stop" : self.stopProgram
+						"stop" : self.stopProgram,
+						"restart" : self.restartProgram
 					}
 
 		if ( arg[0] in command ) :
@@ -62,6 +66,12 @@ class Taskmaster(object):
 
 		if ( arg[1] in self.prog ) :
 			self.prog[arg[1]].stop(debug = True)
+
+	def restartProgram(self, arg):
+		if ( len(arg) < 2 ):
+			return
+		if ( arg[1] in self.prog ) :
+			self.prog[arg[1]].restartAll(debug = True)
 
 	# Parse Json config file
 	def parsing(self, configFile ):
