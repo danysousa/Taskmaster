@@ -1,34 +1,15 @@
 {
 	"cat":
 	{
-		"cmd": "./a.out",
-		"numprocs": 1,
-		"umask": "777",
-		"workingdir": "",
-		"autostart": true,
-		"autorestart": "unexpected",
-		"exitcodes": [0, 2],
-		"startretries": 3,
-		"starttime": 5,
-		"stopsignal": "TERM",
-		"stoptime": 10,
-		"stdout": "/tmp/cat.stdout",
-		"stderr": "/tmp/cat.stderr",
-		"env": {
-			"STARTED_BY" : "bloup", "ANSWER": 42
-		}
-	},
-	"pok":
-	{
 		"cmd": "./pok.py",
 		"numprocs": 1,
 		"umask": "777",
 		"workingdir": "",
 		"autostart": true,
-		"autorestart": "unexpected",
+		"autorestart": "ever",
 		"exitcodes": [0, 2],
 		"startretries": 3,
-		"starttime": 1,
+		"starttime": 5,
 		"stopsignal": "TERM",
 		"stoptime": 10,
 		"stdout": "/tmp/cat.stdout",

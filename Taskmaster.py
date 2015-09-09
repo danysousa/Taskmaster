@@ -17,6 +17,7 @@ class Taskmaster(object):
 		self.updated = 0
 		self.isDone = False;
 		self.t = threading.Thread(name='shell', target=self.shell)
+
 		self.t.start()
 		self.updateAll()
 
@@ -29,7 +30,6 @@ class Taskmaster(object):
 	def shell( self ) :
 		while ( self.isDone == False ):
 			line = input("$>")
-
 			self.checkLine(line)
 			if ( line == "exit" ) :
 				self.isDone = True
@@ -38,9 +38,12 @@ class Taskmaster(object):
 			if ( line == "reload" ) :
 				self.reload()
 
+
 	# Main Loop for update && check Programs
 	def updateAll( self ):
 		while ( self.isDone == False ):
+			for (name, process) in self.prog.items():
+				process.update()
 			time.sleep(0.05)
 
 	# Function for status command
@@ -52,7 +55,9 @@ class Taskmaster(object):
 	def checkLine( self, line ) :
 		arg = line.split(" ")
 		command = 	{
-						"stop" : self.stopProgram
+						"stop" : self.stopProgram,
+						"restart" : self.restartProgram,
+						"start" : self.startProgram
 					}
 
 		if ( arg[0] in command ) :
@@ -65,6 +70,20 @@ class Taskmaster(object):
 
 		if ( arg[1] in self.prog ) :
 			self.prog[arg[1]].stop(debug = True)
+
+	# Function for start command
+	def startProgram(self, arg):
+		if ( len(arg) < 2 ):
+			return
+
+		if ( arg[1] in self.prog ) :
+			self.prog[arg[1]].run()
+
+	def restartProgram(self, arg):
+		if ( len(arg) < 2 ):
+			return
+		if ( arg[1] in self.prog ) :
+			self.prog[arg[1]].restartAll(debug = True)
 
 	# Parse Json config file
 	def parsing( self ):
@@ -82,9 +101,9 @@ class Taskmaster(object):
 
 	def reload( self ) :
 		config = self.parsing( )
+		if ( len(config) < len(self.prog) ) :
+			for (key, value) in self.prog.items() :
+				if key not in config :
+					self.prog[key].stop()
 		for (key, value) in config.items() :
 			self.prog[key].reload( value )
-
-		# if ( oldProg[""] ) :
-		# 	self.prog = prog
-		# else if ()
