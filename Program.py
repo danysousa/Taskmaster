@@ -3,6 +3,7 @@ import getopt
 import os
 import subprocess
 import time
+import errno
 
 def pre_exec(config) :
 	os.umask( int( config["umask"], 8 ))
@@ -98,21 +99,14 @@ class Program(object):
 			print( "[Start to kill " + self.name + "]" )
 		self.getStopSignal()
 		for (nb, elem) in enumerate(self.process) :
-			os.kill(elem["process"].pid, self.getStopSignal())
+			elem["process"].send_signal( self.getStopSignal() )
 			if (debug == True):
 				print( "\t" + str(nb + 1) + "/" + str(len(self.process)) + " process killed")
-
-	def is_process_running(self, process_id):
-		try:
-			os.kill(process_id, 0)
-			return True
-		except OSError:
-			return False
 
 	def status(self) :
 		for currentProcess in self.process :
 			print(currentProcess["process"].pid)
-			if ( self.is_process_running( currentProcess["process"].pid ) == True ) :
-				print(currentProcess["name"] + " is alive ")
+			if ( currentProcess["process"].returncode == None ) :
+				print(currentProcess["name"] + " running ")
 			else :
-				print(currentProcess["name"] + " is dead ")
+				print(currentProcess["name"] + " not running ")
