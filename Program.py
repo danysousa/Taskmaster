@@ -16,6 +16,7 @@ class Program(object):
 		self.process = []
 		self.currentRetries = 0
 		self.stopped = False
+		self.stopAt = -1
 
 		if ( "autostart" in self.config and self.config["autostart"] == True ) :
 			self.run()
@@ -106,6 +107,17 @@ class Program(object):
 			i += 1
 		return (9)
 
+	def stopTask(self):
+		stopTime = self.getConfigValue("stoptime")
+
+		if (stopTime == None or stopTime <= 0):
+			self.stop(debug = True)
+		else :
+			if (stopTime < 0):
+				stopTime = 0;
+			print(self.name + " should be restart in " + str(stopTime) + " sec")
+			self.stopAt = time.time() + stopTime
+
 	# Stop all process
 	def stop(self, debug = False):
 		self.stopped = True
@@ -147,6 +159,12 @@ class Program(object):
 
 	def update(self):
 		i = 0;
+		if (self.stopped == True):
+			return
+		if (self.stopAt > 0 and self.stopAt < time.time() ) :
+			self.stop()
+			return
+
 		while (i < len(self.process)) :
 			if ( self.process[i]["process"].poll() != None ) :
 				self.checkRestart(i)
@@ -164,7 +182,7 @@ class Program(object):
 		startretries = self.getConfigValue("startretries")
 		if ( startretries <= self.process[rank]["restarted"]) :
 			return
-		if ( autorestart == "ever" ) :
+		if ( autorestart == "always" ) :
 			self.process[rank]["restarted"] += 1
 			self.restart(rank)
 			return

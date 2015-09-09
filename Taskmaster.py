@@ -66,7 +66,7 @@ class Taskmaster(object):
 			return
 
 		if ( arg[1] in self.prog ) :
-			self.prog[arg[1]].stop(debug = True)
+			self.prog[arg[1]].stopTask()
 
 	# Function for start command
 	def startProgram(self, arg):
