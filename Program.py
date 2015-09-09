@@ -238,31 +238,31 @@ class Program(object):
 			"env" :  self.config['env'] if 'env' in self.config else None
 		}
 		for (key, value) in restart.items() :
-			if ( self.config["numprocs"] > newConfig["numprocs"]) :
-				print ("flouflou")
-				self.config = newConfig
-				print ("Please restart " + self.name + " program")
-				return ;
-			elif ( self.config["numprocs"] < newConfig["numprocs"] ) :
-				i = 0
-				numberNewProcess = newConfig["numprocs"] - self.config["numprocs"];
-				self.config = newConfig
-				while ( i < numberNewProcess ) :
-					self.process.append( {	"process" : subprocess.Popen( self.getConfigValue("cmd"),
-										shell=True,
-										universal_newlines=True,
-										stdout = self.getStdOut(),
-										stderr = self.getStdErr(),
-										cwd=self.getWorkingDir(),
-										preexec_fn = pre_exec(self.config),
-										env = self.getEnv()
-										),
-							"date" : time.time(),
-							"restarted" : 0
-						}
-					)
-					i += 1
-				return ;
+			if ( self.getConfigValue("numprocs") != None and "numprocs " in newConfig ) :
+				if ( self.config["numprocs"] > newConfig["numprocs"]) :
+					self.config = newConfig
+					print ("Please restart " + self.name + " program")
+					return ;
+				elif ( self.config["numprocs"] < newConfig["numprocs"] ) :
+					i = 0
+					numberNewProcess = newConfig["numprocs"] - self.config["numprocs"];
+					self.config = newConfig
+					while ( i < numberNewProcess ) :
+						self.process.append( {	"process" : subprocess.Popen( self.getConfigValue("cmd"),
+											shell=True,
+											universal_newlines=True,
+											stdout = self.getStdOut(),
+											stderr = self.getStdErr(),
+											cwd=self.getWorkingDir(),
+											preexec_fn = pre_exec(self.config),
+											env = self.getEnv()
+											),
+								"date" : time.time(),
+								"restarted" : 0
+							}
+						)
+						i += 1
+					return ;
 			if key in newConfig :
 				if ( newConfig[key] != value ) :
 					self.config = newConfig

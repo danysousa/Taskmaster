@@ -1,6 +1,7 @@
 import cmd
 import Taskmaster
 import signal
+from Program import Program
 
 class Shell(cmd.Cmd):
 
@@ -68,5 +69,11 @@ class Shell(cmd.Cmd):
 			for (key, value) in self.taskmaster.prog.items() :
 				if key not in config :
 					self.taskmaster.prog[key].stop()
+		else :
+			for (key, value) in config.items() :
+				if key not in self.taskmaster.prog :
+					self.taskmaster.prog[key] = Program(key, config)
+			# 	if key not in self.taskmaster.prog :
+			# 	self.taskmaster.prog[key].start()
 		for (key, value) in config.items() :
 			self.taskmaster.prog[key].reload( value )
