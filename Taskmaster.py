@@ -1,5 +1,6 @@
 from Program import Program
 import time
+import json
 import sys
 import getopt
 import os
@@ -9,9 +10,9 @@ import signal
 
 class Taskmaster(object):
 
-	def __init__(self, prog):
+	def __init__(self, configFile):
 		signal.signal(signal.SIGINT, self.quitBySignal)
-		self.prog = prog
+		self.prog = self.load( configFile )
 		self.updated = 0
 		self.isDone = False;
 		self.t = threading.Thread(name='shell', target=self.shell)
@@ -39,3 +40,15 @@ class Taskmaster(object):
 	def getStatus(self) :
 		for (key, value) in self.prog.items() :
 			value.status()
+
+	def parsing(self, configFile ):
+		with open(configFile) as data_file:
+			data = json.load(data_file)
+		return data
+
+	def load(self, configFile) :
+		config = self.parsing( configFile )
+		program = {};
+		for (key, value) in config.items():
+			program[key] = Program(key, value)
+		return program;

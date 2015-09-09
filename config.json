@@ -1,8 +1,8 @@
 {
 	"cat":
 	{
-		"cmd": "cat",
-		"numprocs": 2,
+		"cmd": "env",
+		"numprocs": 1,
 		"umask": "777",
 		"workingdir": "/tmp",
 		"autostart": true,
