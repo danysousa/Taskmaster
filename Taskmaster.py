@@ -24,11 +24,12 @@ class Taskmaster(object):
 	def shell(self):
 		while ( self.isDone == False ):
 			line = input("$>")
-			print(self.updated)
 			if ( line == "exit" ) :
 				self.isDone = True
+			if ( line == "stop cat"):
+				self.prog["cat"].stop(debug = True)
 
 	def updateAll(self):
 		while ( self.isDone == False ):
 			self.updated += 1
-			time.sleep(0.05)
+			time.sleep(0.5)
