@@ -6,16 +6,35 @@
 		"umask": "777",
 		"workingdir": "",
 		"autostart": true,
-		"autorestart": "ever",
+		"autorestart": "always",
 		"exitcodes": [0, 2],
 		"startretries": 3,
+		"starttime": 5,
+		"stopsignal": "TERM",
+		"stoptime": 0,
+		"stdout": "/tmp/cat.stdout",
+		"stderr": "/tmp/cat.stderr",
+		"env": {
+			"STARTED_BY" : "taskmaster", "ANSWER": 42
+		}
+	},
+	"pok":
+	{
+		"cmd": "./pok.py",
+		"numprocs": 3,
+		"umask": "777",
+		"workingdir": "",
+		"autostart": true,
+		"autorestart": "always",
+		"exitcodes": [0, 2],
+		"startretries": 2,
 		"starttime": 5,
 		"stopsignal": "TERM",
 		"stoptime": 10,
 		"stdout": "/tmp/cat.stdout",
 		"stderr": "/tmp/cat.stderr",
 		"env": {
-			"BLOUP" : "taskmaster", "LOOP": 42
+			"STARTED_BY" : "taskmaster", "ANSWER": 42
 		}
 	}
 }
