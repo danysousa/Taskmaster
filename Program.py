@@ -14,7 +14,6 @@ class Program(object):
 		self.config = config
 		self.process = [];
 		self.currentRetries = 0;
-		# print(name)
 
 		if ( "autostart" in self.config and self.config["autostart"] == True ) :
 			self.run()
@@ -79,6 +78,29 @@ class Program(object):
 								}
 							)
 			i += 1
+
+	def getStopSignal(self):
+		signame = self.getConfigValue("stopsignal")
+
+		if ( signame == None ) :
+			return (9)
+
+		i = 0;
+		sig = ["HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "EMT", "FPE", "KILL", "BUS", "SEGV", "SYS", "PIPE", "ALRM", "TERM", "URG", "STOP", "TSTP", "CONT", "CHLD", "TTIN", "TTOU", "IO", "XCPU", "XFSZ", "VTALR", "PROF", "WINCH", "INFO", "USR1", "USR2"]
+		while i < len(sig) :
+			if sig[i] == signame:
+				return (i + 1)
+			i += 1
+		return (9)
+
+	def stop(self, debug = False):
+		if (debug == True):
+			print( "[Start to kill " + self.name + "]" )
+		self.getStopSignal()
+		for (nb, elem) in enumerate(self.process) :
+			os.kill(elem["process"].pid, self.getStopSignal())
+			if (debug == True):
+				print( "\t" + str(nb + 1) + "/" + str(len(self.process)) + " process killed")
 
 	def is_process_running(self, process_id):
 		try:

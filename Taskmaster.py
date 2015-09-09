@@ -26,15 +26,15 @@ class Taskmaster(object):
 	def shell(self):
 		while ( self.isDone == False ):
 			line = input("$>")
-			print(self.updated)
 			if ( line == "exit" ) :
 				self.isDone = True
+			if ( line == "stop cat"):
+				self.prog["cat"].stop(debug = True)
 			if ( line == "status" ) :
 				self.getStatus()
 
 	def updateAll(self):
 		while ( self.isDone == False ):
-			self.updated += 1
 			time.sleep(0.05)
 
 	def getStatus(self) :
@@ -52,3 +52,4 @@ class Taskmaster(object):
 		for (key, value) in config.items():
 			program[key] = Program(key, value)
 		return program;
+

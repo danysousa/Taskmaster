@@ -1,10 +1,10 @@
 {
 	"cat":
 	{
-		"cmd": "env",
+		"cmd": "./pok.py",
 		"numprocs": 1,
 		"umask": "777",
-		"workingdir": "/tmp",
+		"workingdir": "",
 		"autostart": true,
 		"autorestart": "unexpected",
 		"exitcodes": [0, 2],
@@ -12,10 +12,11 @@
 		"starttime": 5,
 		"stopsignal": "TERM",
 		"stoptime": 10,
-		"stdout": "/tmp/env.stdout",
-		"stderr": "/tmp/env.stderr",
+		"stdout": "/tmp/cat.stdout",
+		"stderr": "/tmp/cat.stderr",
 		"env": {
 			"STARTED_BY" : "taskmaster", "ANSWER": 42
 		}
 	}
+
 }
