@@ -11,11 +11,11 @@
 		"startretries": 3,
 		"starttime": 5,
 		"stopsignal": "TERM",
-		"stoptime": 0,
+		"stoptime": 2,
 		"stdout": "/tmp/cat.stdout",
 		"stderr": "/tmp/cat.stderr",
 		"env": {
-			"STARTED_BY" : "taskmaster", "ANSWER": 42
+			"STARTED_BY" : "taskmaster"
 		}
 	},
 	"pok":

@@ -54,9 +54,11 @@ class Program(object):
 
 	# Return the env of process
 	def getEnv(self) :
-		for (key, value) in self.config["env"].items() :
-			os.environ[str(key)] = str(value)
-		return (os.environ)
+		if ( self.getConfigValue("env") != None ) :
+			for (key, value) in self.config["env"].items() :
+				os.environ[str(key)] = str(value)
+			return (os.environ)
+		return (None)
 
 	# Return the working dir of process
 	def getWorkingDir(self):
@@ -198,6 +200,10 @@ class Program(object):
 		self.restart(rank)
 
 	def restartAll(self, debug = False):
+		if (len(self.process) == 0):
+			print("Please start the program before")
+			return
+
 		if (debug == True):
 			print( "[Start to restart " + self.name + "]" )
 
@@ -221,3 +227,50 @@ class Program(object):
 															env = self.getEnv()
 														)
 		self.process[rank]["date"] = time.time()
+
+	def reload( self, newConfig ) :
+		restart = {
+			"cmd" : self.config['cmd'] if 'cmd' in self.config else None,
+			"umask" : self.config['umask'] if 'umask' in self.config else None,
+			"workingdir" : self.config['workingdir'] if 'workingdir' in self.config else None,
+			"stdout" : self.config['stdout'] if 'stdout' in self.config else None,
+			"stderr" : self.config['stderr'] if 'stderr' in self.config else None,
+			"env" :  self.config['env'] if 'env' in self.config else None
+		}
+		for (key, value) in restart.items() :
+			if ( self.config["numprocs"] > newConfig["numprocs"]) :
+				print ("flouflou")
+				self.config = newConfig
+				print ("Please restart " + self.name + " program")
+				return ;
+			elif ( self.config["numprocs"] < newConfig["numprocs"] ) :
+				i = 0
+				numberNewProcess = newConfig["numprocs"] - self.config["numprocs"];
+				self.config = newConfig
+				while ( i < numberNewProcess ) :
+					self.process.append( {	"process" : subprocess.Popen( self.getConfigValue("cmd"),
+										shell=True,
+										universal_newlines=True,
+										stdout = self.getStdOut(),
+										stderr = self.getStdErr(),
+										cwd=self.getWorkingDir(),
+										preexec_fn = pre_exec(self.config),
+										env = self.getEnv()
+										),
+							"date" : time.time(),
+							"restarted" : 0
+						}
+					)
+					i += 1
+				return ;
+			if key in newConfig :
+				if ( newConfig[key] != value ) :
+					self.config = newConfig
+					print ("Please restart " + self.name + " program")
+					return ;
+			elif key in self.config :
+				print(key)
+				self.config = newConfig
+				print ("Please restart " + self.name + " program 2.0")
+				return ;
+		self.config = newConfig

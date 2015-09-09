@@ -12,7 +12,10 @@ class Shell(cmd.Cmd):
 		self.taskmaster = taskmaster
 
 	def sig(self, a, b):
-		self.onecmd("    \n")
+		self.onecmd("\n")
+
+	def emptyline(self):
+		return True
 
 	# Function for stop command
 	def do_stop(self, program):
@@ -47,10 +50,23 @@ class Shell(cmd.Cmd):
 	# Function for status command
 	def do_status(self, line) :
 		"""status
-		Restart the program"""
+		Print status for all programs"""
 		for (key, value) in self.taskmaster.prog.items() :
 			value.status()
 
 	def do_exit(self, line) :
+		"""exit
+		Exit the main program"""
 		self.taskmaster.isDone = True
 		exit()
+
+	def do_reload(self, line) :
+		"""reload
+		Reload the config file and apply change"""
+		config = self.taskmaster.parsing( )
+		if ( len(config) < len(self.taskmaster.prog) ) :
+			for (key, value) in self.taskmaster.prog.items() :
+				if key not in config :
+					self.taskmaster.prog[key].stop()
+		for (key, value) in config.items() :
+			self.taskmaster.prog[key].reload( value )

@@ -11,9 +11,10 @@ from Shell import Shell
 
 class Taskmaster(object):
 
-	def __init__(self, configFile):
+	def __init__( self, configFile ):
 		signal.signal(signal.SIGINT, self.quitBySignal)
-		self.prog = self.load( configFile )
+		self.configFile = configFile
+		self.prog = self.load( )
 		self.updated = 0
 		self.isDone = False;
 		self.shell = Shell(self)
@@ -27,23 +28,22 @@ class Taskmaster(object):
 		return True
 
 	# Main Loop for update && check Programs
-	def updateAll(self):
+	def updateAll( self ):
 		while ( self.isDone == False ):
 			for (name, process) in self.prog.items():
 				process.update()
 			time.sleep(0.05)
 
 	# Parse Json config file
-	def parsing(self, configFile ):
-		with open(configFile) as data_file:
-			data = json.load(data_file)
+	def parsing( self ):
+		with open( self.configFile ) as data_file:
+			data = json.load( data_file )
 		return data
 
 	# Load config file
-	def load(self, configFile) :
-		config = self.parsing( configFile )
+	def load( self ) :
+		config = self.parsing( )
 		program = {};
 		for (key, value) in config.items():
 			program[key] = Program(key, value)
-		return program;
-
+		return program
