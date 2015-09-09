@@ -82,7 +82,6 @@ class Program(object):
 												env = self.getEnv()
 												),
 									"date" : time.time(),
-									"name" : self.name + " " + str(i + 1),
 									"restarted" : 0
 								}
 							)
