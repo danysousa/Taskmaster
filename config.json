@@ -15,12 +15,12 @@
 		"stdout": "/tmp/cat.stdout",
 		"stderr": "/tmp/cat.stderr",
 		"env": {
-			"STARTED_BY" : "taskmaster", "ANSWER": 42
+			"STARTED_BY" : "bloup", "ANSWER": 42
 		}
 	},
 	"pok":
 	{
-		"cmd": "./a.out",
+		"cmd": "./pok.py",
 		"numprocs": 1,
 		"umask": "777",
 		"workingdir": "",
@@ -34,7 +34,7 @@
 		"stdout": "/tmp/cat.stdout",
 		"stderr": "/tmp/cat.stderr",
 		"env": {
-			"STARTED_BY" : "taskmaster", "ANSWER": 42
+			"BLOUP" : "taskmaster", "LOOP": 42
 		}
 	}
 }

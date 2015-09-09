@@ -113,3 +113,24 @@ class Program(object):
 					print(currentProcess["name"] + " " + str(currentProcess["process"].pid) + " running ")
 				else :
 					print(currentProcess["name"] + " not running ")
+
+	def reload( self, newConfig ) :
+		restart = {
+			"cmd" : newConfig['cmd'],
+			"umask" : newConfig['umask'],
+			"workingdir" : newConfig['workingdir'],
+			"stdout" : newConfig['stdout'],
+			"stderr" : newConfig['stderr'],
+			"env" : newConfig['env']
+		}
+		for (key, value) in self.config.items() :
+			if key in restart :
+				if ( restart[key] != value ) :
+					self.config = config
+					print ("Please restart " + self.name + " program")
+					return ;
+			else :
+				self.config = newConfig
+
+
+
