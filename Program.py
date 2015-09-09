@@ -68,7 +68,10 @@ class Program(object):
 	def run(self):
 		nbProcess = self.getConfigValue("numprocs")
 		i = 0;
-
+		if ( len(self.process) != 0 ):
+			print("This program is already started")
+			return
+		print("[Start to run " + self.name + "]")
 		if ( nbProcess == None ):
 			nbProcess = 1
 		while ( i < nbProcess ):
@@ -86,6 +89,7 @@ class Program(object):
 								}
 							)
 			i += 1
+		print("\t" + str(i) + " process launched")
 
 	# Return the signum for stop process
 	def getStopSignal(self):
@@ -105,6 +109,9 @@ class Program(object):
 	# Stop all process
 	def stop(self, debug = False):
 		self.stopped = True
+		if ( len(self.process) == 0 ):
+			print("This program is already stopped")
+			return
 		if (debug == True):
 			print( "[Start to kill " + self.name + "]" )
 		self.getStopSignal()
@@ -113,11 +120,17 @@ class Program(object):
 				elem["process"].send_signal(self.getStopSignal())
 			if (debug == True):
 				print( "\t" + str(nb + 1) + "/" + str(len(self.process)) + " process killed")
+		self.process = []
 
 	def status(self) :
 		progress = 0
 		running = 0
 		dead = 0
+
+		print("[Status : " + self.name + "]")
+		if ( len(self.process) == 0 ):
+			print("\tProgram stopped")
+			return
 		for currentProcess in self.process :
 			if ( currentProcess["process"].poll() == None ) :
 				currentTime = time.time()
@@ -128,7 +141,6 @@ class Program(object):
 			else :
 				dead += 1
 
-		print("[Status : " + self.name + "]")
 		print("\t" + str(running) + " process running")
 		print("\t" + str(dead) + " process dead")
 		print("\t" + str(progress) + " process in progress")
@@ -187,3 +199,4 @@ class Program(object):
 															preexec_fn = pre_exec(self.config),
 															env = self.getEnv()
 														)
+		self.process[rank]["date"] = time.time()

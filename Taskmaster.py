@@ -53,7 +53,8 @@ class Taskmaster(object):
 		arg = line.split(" ")
 		command = 	{
 						"stop" : self.stopProgram,
-						"restart" : self.restartProgram
+						"restart" : self.restartProgram,
+						"start" : self.startProgram
 					}
 
 		if ( arg[0] in command ) :
@@ -66,6 +67,14 @@ class Taskmaster(object):
 
 		if ( arg[1] in self.prog ) :
 			self.prog[arg[1]].stop(debug = True)
+
+	# Function for start command
+	def startProgram(self, arg):
+		if ( len(arg) < 2 ):
+			return
+
+		if ( arg[1] in self.prog ) :
+			self.prog[arg[1]].run()
 
 	def restartProgram(self, arg):
 		if ( len(arg) < 2 ):

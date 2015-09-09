@@ -21,7 +21,7 @@
 	"pok":
 	{
 		"cmd": "./pok.py",
-		"numprocs": 1,
+		"numprocs": 3,
 		"umask": "777",
 		"workingdir": "",
 		"autostart": true,
