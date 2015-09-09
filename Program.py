@@ -116,11 +116,23 @@ class Program(object):
 				print( "\t" + str(nb + 1) + "/" + str(len(self.process)) + " process killed")
 
 	def status(self) :
+		progress = 0
+		running = 0
+		dead = 0
 		for currentProcess in self.process :
 			if ( currentProcess["process"].poll() == None ) :
-				print(currentProcess["name"] + " running ")
+				currentTime = time.time()
+				if (currentTime - currentProcess["date"] >= self.config["starttime"]) :
+					running += 1
+				else :
+					progress += 1
 			else :
-				print(currentProcess["name"] + " not running ")
+				dead += 1
+
+		print("[Status : " + self.name + "]")
+		print("\t" + str(running) + " process running")
+		print("\t" + str(dead) + " process dead")
+		print("\t" + str(progress) + " process in progress")
 
 	def update(self):
 		i = 0;
