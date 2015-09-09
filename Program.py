@@ -105,8 +105,9 @@ class Program(object):
 
 	def status(self) :
 		for currentProcess in self.process :
-			print(currentProcess["process"].pid)
-			if ( currentProcess["process"].returncode == None ) :
-				print(currentProcess["name"] + " running ")
-			else :
-				print(currentProcess["name"] + " not running ")
+			if ( currentProcess["process"].poll() == None ) :
+				currentTime = time.time()
+				if (currentTime - currentProcess["date"] >= self.config["starttime"]) :
+					print(currentProcess["name"] + " " + str(currentProcess["process"].pid) + " running ")
+				else :
+					print(currentProcess["name"] + " not running ")
